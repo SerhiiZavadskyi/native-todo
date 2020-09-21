@@ -1,40 +1,50 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, FlatList } from "react-native";
-import { AddTodo } from "./src/AddTodo";
-import  TodoContext  from "./src/TodoContext";
-import { Navbar } from "./src/Navbar";
-import { Todo } from "./src/Todo";
-import { v4 as uuidv4 } from "uuid";
+
+import TodoContext from "./src/context/TodoContext";
+import { Navbar } from "./src/components/Navbar";
+import { MainScreen } from "./src/screens/MainScreen";
+import { TodoScreen } from "./src/screens/TodoScreen";
 
 export default function App() {
   const [todos, setTodos] = useState([]);
-
+  const [todoId, setTodoId] = useState(true);
+  const [selectedTodo, setSelectedTodo ] = useState({})
   const addTodo = (title) => {
     const newTodo = {
-      id: uuidv4(),
+      id: Date.now().toString(),
       title,
     };
-
     setTodos((prevTodos) => [...prevTodos, newTodo]);
   };
 
+  const removeTodo = (id) =>
+    setTodos((prev) => prev.filter((item) => item.id !== id));
 
-  const removeTodo =(id) => setTodos(prev => prev.filter(item => item.id !== id))
-  
-  
+  const openTodo = (id) => {
+    setTodoId(id);
+    setSelectedTodo(todos.find(todo => todo.id === id))
+  };
 
+  const onBack = () => {
+    setTodoId(null);
+  };
+
+  const content = todoId ? <TodoScreen /> : <MainScreen />;
   return (
     <View>
-      <TodoContext.Provider value={{ addTodo, removeTodo }}>
+      <TodoContext.Provider
+        value={{
+          addTodo,
+          removeTodo,
+          openTodo,
+          onBack,
+          todos,
+          selectedTodo
+        }}
+      >
         <Navbar />
-        <View style={styles.container}>
-          <AddTodo />
-          <FlatList
-            data={todos}
-            renderItem={({ item }) => <Todo todo={item} />}
-            keyExtractor={(item) => item.id}
-          />
-        </View>
+        <View style={styles.container}>{content}</View>
       </TodoContext.Provider>
     </View>
   );

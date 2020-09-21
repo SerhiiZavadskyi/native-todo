@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { View, Text, TextInput, StyleSheet, Button, Alert } from "react-native";
-import  TodoContext  from "./TodoContext";
+import  TodoContext  from "../context/TodoContext";
+import { THEME } from "../thema";
 
 export const AddTodo = () => {
   const { addTodo } = useContext(TodoContext);
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     borderStyle: "solid",
     borderBottomWidth: 2,
-    borderBottomColor: "#3949ab",
+    borderBottomColor: THEME.MAIN_COLOR,
     marginRight: 10,
   },
 });

@@ -1,14 +1,14 @@
 import React, {useContext} from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import TodoContext from './TodoContext'
+import TodoContext from '../context/TodoContext'
 
 export const Todo = ({ todo }) => {
 
-   const {removeTodo} = useContext(TodoContext)
+   const {removeTodo, openTodo} = useContext(TodoContext)
   return (
     <TouchableOpacity
       activeOpacity={0.5}
-      onPress={() => console.log(todo.id)}
+      onPress={() => openTodo(todo.id)}
       onLongPress={() => removeTodo(todo.id)}
     >
       <View style={styles.todo}>
