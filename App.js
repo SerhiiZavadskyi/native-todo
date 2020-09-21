@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, FlatList } from "react-native";
+import { StyleSheet, View, Alert } from "react-native";
 
 import TodoContext from "./src/context/TodoContext";
 import { Navbar } from "./src/components/Navbar";
@@ -7,9 +7,17 @@ import { MainScreen } from "./src/screens/MainScreen";
 import { TodoScreen } from "./src/screens/TodoScreen";
 
 export default function App() {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState([
+    {
+      id: "1",
+      title: "read books",
+    },
+  ]);
   const [todoId, setTodoId] = useState(true);
-  const [selectedTodo, setSelectedTodo ] = useState({})
+  const [selectedTodo, setSelectedTodo] = useState({
+    id: "1",
+    title: "read books sdv dsvsd v dsv bg bgf fg",
+  });
   const addTodo = (title) => {
     const newTodo = {
       id: Date.now().toString(),
@@ -18,12 +26,35 @@ export default function App() {
     setTodos((prevTodos) => [...prevTodos, newTodo]);
   };
 
-  const removeTodo = (id) =>
-    setTodos((prev) => prev.filter((item) => item.id !== id));
+  const removeTodo = (id) => {
+    const { title } = todos.find((item) => (item.id = id));
+
+    Alert.alert(
+      "Delete",
+      `Delete todo "${title}"?`,
+      [
+        {
+          text: "Cancel",
+          style: "positive",
+        },
+        {
+          text: "Delete",
+          style: "negative",
+          onPress: () => {
+            setTodoId(null);
+            setTodos((prev) => prev.filter((item) => item.id !== id));
+            
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+   
+  };
 
   const openTodo = (id) => {
     setTodoId(id);
-    setSelectedTodo(todos.find(todo => todo.id === id))
+    setSelectedTodo(todos.find((todo) => todo.id === id));
   };
 
   const onBack = () => {
@@ -40,7 +71,7 @@ export default function App() {
           openTodo,
           onBack,
           todos,
-          selectedTodo
+          selectedTodo,
         }}
       >
         <Navbar />
