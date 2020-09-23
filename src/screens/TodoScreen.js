@@ -9,19 +9,27 @@ export const TodoScreen = () => {
   const {
     removeTodo,
     onBack,
+    updateTodo,
     selectedTodo: { title, id },
   } = useContext(TodoContext);
-  const [modal, setModal] = useState(false)
+
+  const [modal, setModal] = useState(false);
+  const onSave = (titleTodo) => {
+    updateTodo(id, titleTodo);
+    setModal(false);
+  };
+
   return (
     <View>
-      <EditModal visible={modal} onCancel={() => {setModal(false)}
-      } />
+      <EditModal
+        onSave={onSave}
+        value={title}
+        visible={modal}
+        onCancel={() => setModal(false)}
+      />
       <AppCard style={styles.card}>
         <Text style={styles.title}>{title}</Text>
-        <Button title='Edit' onPress={() => {
-          setModal(true)
-        }
-        } />
+        <Button title="Edit" onPress={() => setModal(true)} />
       </AppCard>
       <View style={styles.buttons}>
         <View style={styles.button}>
@@ -48,13 +56,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  button: {
-    width: "40%",
-  },
-  card:{
+  card: {
     marginBottom: 20,
   },
   title: {
-    fontSize: 20
-  }
+    fontSize: 20,
+    width: '85%'
+  },
 });

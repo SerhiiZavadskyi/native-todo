@@ -6,6 +6,7 @@ import { Navbar } from "./src/components/Navbar";
 import { MainScreen } from "./src/screens/MainScreen";
 import { TodoScreen } from "./src/screens/TodoScreen";
 
+
 export default function App() {
   const [todos, setTodos] = useState([
     {
@@ -13,19 +14,27 @@ export default function App() {
       title: "read books",
     },
   ]);
-  const [todoId, setTodoId] = useState(true);
-  const [selectedTodo, setSelectedTodo] = useState({
-    id: "1",
-    title: "read books sdv dsvsd v dsv bg bgf fg",
-  });
+  const [todoId, setTodoId] = useState(null);
+  const [selectedTodo, setSelectedTodo] = useState({});
+
   const addTodo = (title) => {
     const newTodo = {
-      id: Date.now().toString(),
+      id:Date.now().toString(),
       title,
     };
     setTodos((prevTodos) => [...prevTodos, newTodo]);
   };
 
+
+  const updateTodo = (id, title) => { 
+      setTodos(prevTodos => {
+        const toUpdate = [...prevTodos];
+        const idx = toUpdate.findIndex(todo => todo.id === id);
+        toUpdate[idx].title = title;
+        return toUpdate;
+      })
+  }
+  
   const removeTodo = (id) => {
     const { title } = todos.find((item) => (item.id = id));
 
@@ -70,6 +79,7 @@ export default function App() {
           removeTodo,
           openTodo,
           onBack,
+          updateTodo,
           todos,
           selectedTodo,
         }}
